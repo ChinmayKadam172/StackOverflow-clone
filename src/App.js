@@ -1,25 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import Header from "./components/Header";
+import LeftBar from "./components/LeftBar";
+import AuthProvider from "./AuthContext";
+import MainDiv from "./components/MainDiv";
+import Auth from "./components/Auth";
+import LogIn from "./components/LogIn";
+import PrivateRoute from "./components/PrivateRoute";
+import Users from "./components/Users";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PostQuestion from "./components/PostQuestion";
+import ShowQuestion from "./components/showQuestion";
+import Tags from "./components/Tags";
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<Router>
+			<AuthProvider>
+				<div className="App">
+					<LeftBar />
+					<Header />
+					<Routes>
+						<Route
+							exact
+							path="/"
+							element={
+								<PrivateRoute>
+									<MainDiv />
+								</PrivateRoute>
+							}
+						/>
+						<Route path="/signup" element={<Auth />} />
+						<Route path="/login" element={<LogIn />} />
+						<Route path="/users" element={<Users />} />
+						<Route path="/tags" element={<Tags />} />
+						<Route
+							path="/question/:title"
+							element={<ShowQuestion />}
+						/>
+
+						<Route
+							path="/postquestion"
+							element={
+								<PrivateRoute>
+									<PostQuestion />
+								</PrivateRoute>
+							}
+						/>
+					</Routes>
+				</div>
+			</AuthProvider>
+		</Router>
+	);
 }
 
 export default App;
